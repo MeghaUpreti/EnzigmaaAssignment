@@ -1,0 +1,61 @@
+package com.enzigma.demo.serviceImpl;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.enzigma.demo.Dao.TaskDao;
+import com.enzigma.demo.Entity.TaskEntity;
+import com.enzigma.demo.service.TaskService;
+
+import jakarta.transaction.Transactional;
+
+@Transactional
+@Service
+public class TaskServiceImpl implements TaskService {
+
+    @Autowired
+    private TaskDao taskDao;
+
+    @Override
+    public List<TaskEntity> getAllTask() {
+        return taskDao.findAll();
+    }
+
+    @Override
+    public TaskEntity addTask(TaskEntity task) {
+        return taskDao.save(task);
+    }
+
+    @Override
+    public void deleteTask(Long id) {
+        Optional<TaskEntity> task = taskDao.findById(id);
+        if (task.isPresent()) {
+            taskDao.deleteById(id);
+        } else {
+            throw new RuntimeException("Task not found with ID: " + id);
+        }
+    }
+
+    @Override
+    public Optional<TaskEntity> findTaskById(Long id) {
+        return taskDao.findById(id);
+    }
+
+    @Override
+    public TaskEntity updateTask(Long id, TaskEntity updatedTask) {
+        TaskEntity existingTask = taskDao.findById(id)
+            .orElseThrow(() -> new RuntimeException("Task not found with ID: " + id));
+
+        existingTask.setTitle(updatedTask.getTitle());
+        existingTask.setAssignedTo(updatedTask.getAssignedTo());
+        existingTask.setStatus(updatedTask.getStatus());
+        existingTask.setDueDate(updatedTask.getDueDate());
+        existingTask.setPriority(updatedTask.getPriority());
+        existingTask.setComments(updatedTask.getComments());
+
+        return taskDao.save(existingTask);
+    }
+}

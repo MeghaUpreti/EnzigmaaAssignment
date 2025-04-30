@@ -1,0 +1,23 @@
+package com.enzigma.demo.Entity;
+
+import jakarta.persistence.Entity;
+
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import jakarta.persistence.GenerationType;
+
+@Entity
+@AllArgsConstructor
+
+
+@Getter
+@Setter
+public class TaskEntity {
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
+
+}

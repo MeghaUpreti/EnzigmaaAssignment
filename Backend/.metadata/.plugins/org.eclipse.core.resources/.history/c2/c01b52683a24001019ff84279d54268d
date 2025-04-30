@@ -1,0 +1,8 @@
+package com.enzigma.demo.Entity;
+
+import jakarta.persistence.Entity;
+
+@Entity
+public class TaskEntity {
+
+}

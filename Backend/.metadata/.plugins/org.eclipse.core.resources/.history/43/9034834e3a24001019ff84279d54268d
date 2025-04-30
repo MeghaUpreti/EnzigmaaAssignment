@@ -1,0 +1,47 @@
+package com.enzigma.demo.serviceImpl;
+
+import java.util.List;
+import java.util.Optional;
+
+import javax.management.RuntimeErrorException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.config.Task;
+import org.springframework.stereotype.Service;
+
+import com.enzigma.demo.Dao.TaskDao;
+import com.enzigma.demo.Entity.TaskEntity;
+import com.enzigma.demo.service.TaskService;
+
+import jakarta.transaction.Transactional;
+@Transactional
+@Service
+public class TaskServiceImpl implements TaskService {
+	@Autowired
+	private TaskDao taskDao;
+
+	@Override
+	public List<TaskEntity> getAllTask() {
+		// TODO Auto-generated method stub
+		return taskDao.findAll();
+	}
+
+	@Override
+	public TaskEntity addTask(TaskEntity task) {
+		// TODO Auto-generated method stub
+		return taskDao.save(task);
+	}
+
+	@Override
+	public void deleteTask(Long id) {
+		// TODO Auto-generated method stub
+		Optional<TaskEntity> task = taskDao.findById(id);
+		if(task.isPresent()) {
+			taskDao.deleteById(id);
+		}else {
+			throw new RuntimeErrorException(null, "task not found " + id);
+		}
+		
+	}
+
+}

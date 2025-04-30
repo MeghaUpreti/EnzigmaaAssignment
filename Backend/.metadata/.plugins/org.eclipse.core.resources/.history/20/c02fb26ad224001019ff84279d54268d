@@ -1,0 +1,18 @@
+package com.enzigma.demo.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.enzigma.demo.Entity.TaskEntity;
+
+public interface TaskService {
+
+	List<TaskEntity> getAllTask();
+
+	TaskEntity addTask(TaskEntity task);
+
+	void deleteTask(Long id);
+
+	Optional<TaskEntity> findTAskById(Long id);
+
+}

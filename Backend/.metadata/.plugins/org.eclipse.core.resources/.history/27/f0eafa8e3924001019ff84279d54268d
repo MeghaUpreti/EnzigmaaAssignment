@@ -1,0 +1,27 @@
+package com.enzigma.demo.serviceImpl;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.enzigma.demo.Entity.TaskEntity;
+import com.enzigma.demo.service.TaskService;
+
+import jakarta.transaction.Transactional;
+@Transactional
+@Service
+public class TaskServiceImpl implements TaskService {
+
+	@Override
+	public List<TaskEntity> getAllTask() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TaskEntity addTask(TaskEntity task) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

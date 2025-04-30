@@ -1,0 +1,66 @@
+package com.enzigma.demo.controller;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.enzigma.demo.Entity.TaskEntity;
+import com.enzigma.demo.service.TaskService;
+
+@RestController
+@RequestMapping("/tasks")
+@CrossOrigin(origins = "http://localhost:3000")
+public class TaskController {
+	@Autowired
+	private TaskService taskService;
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<TaskEntity> getTaskById(@PathVariable Long id){
+		Optional<TaskEntity> task = taskService.findTAskById(id);
+		if(task.isPresent()) {
+			return ResponseEntity.ok(task.get());
+		}else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	@GetMapping
+	public List<TaskEntity> getallTask(){
+		return taskService.getAllTask();
+		
+	}
+	
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<TaskEntity> updateTaskById(@PathVariable Long id , @RequestBody TaskEntity updatedTask){
+		try {
+			TaskEntity task = taskService.updateTask(id, updatedTask);
+			return ResponseEntity.ok(task);
+			
+		}catch(RuntimeException exc){
+			return ResponseEntity.notFound().build();
+			
+		}
+	}
+	
+	@PostMapping
+	public TaskEntity addTask(@RequestBody TaskEntity task) {
+		return taskService.addTask(task);
+	}
+	
+	@DeleteMapping("/{id}")
+	public void deleteTask(@PathVariable Long id) {
+		taskService.deleteTask(id);
+	}
+
+}

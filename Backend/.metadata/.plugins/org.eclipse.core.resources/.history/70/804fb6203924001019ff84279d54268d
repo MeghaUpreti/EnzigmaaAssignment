@@ -1,0 +1,5 @@
+package com.enzigma.demo.service;
+
+public interface TaskService {
+
+}
