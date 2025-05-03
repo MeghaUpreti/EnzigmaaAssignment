@@ -1,0 +1,41 @@
+package com.enzigma.demo;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+
+import com.enzigma.demo.Entity.TaskEntity;
+import com.enzigma.demo.controller.TaskController;
+import com.enzigma.demo.service.TaskService;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+import org.mockito.Mockito;
+
+@WebMvcTest(TaskController.class)
+public class TaskControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @SuppressWarnings("removal") // To suppress the @MockBean deprecation warning
+    @MockBean
+    private TaskService taskService;
+
+    @Test
+    void shouldReturnTasks() throws Exception {
+        TaskEntity task = new TaskEntity();
+        task.setTitle("Test Task");
+
+        Mockito.when(taskService.getAllTask()).thenReturn(List.of(task));
+
+        mockMvc.perform(get("/tasks"))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$[0].title").value("Test Task"));
+    }
+}

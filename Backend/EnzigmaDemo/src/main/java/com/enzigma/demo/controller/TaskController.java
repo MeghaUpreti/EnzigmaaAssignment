@@ -32,9 +32,12 @@ public class TaskController {
         return taskService.getAllTask();
     }
 
-    // Add new task
     @PostMapping
     public TaskEntity addTask(@RequestBody TaskEntity task) {
+       
+        if (task.getCompleted() == null) {
+            task.setCompleted(false);  
+        }
         return taskService.addTask(task);
     }
 

@@ -26,6 +26,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskEntity addTask(TaskEntity task) {
+        
+        if (task.getCompleted() == null) {
+            task.setCompleted(false);
+        }
         return taskDao.save(task);
     }
 
@@ -55,6 +59,11 @@ public class TaskServiceImpl implements TaskService {
         existingTask.setDueDate(updatedTask.getDueDate());
         existingTask.setPriority(updatedTask.getPriority());
         existingTask.setComments(updatedTask.getComments());
+
+
+        if (updatedTask.getCompleted() != null) {
+            existingTask.setCompleted(updatedTask.getCompleted());
+        }
 
         return taskDao.save(existingTask);
     }

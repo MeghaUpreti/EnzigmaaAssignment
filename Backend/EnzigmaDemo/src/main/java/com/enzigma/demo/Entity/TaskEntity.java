@@ -25,7 +25,8 @@ public class TaskEntity {
     private String title;
     private String assignedTo;
     private String status;
-    private String dueDate;    // You can change this to LocalDate with proper formatting
+    private String dueDate;   
     private String priority;
     private String comments;
+    private Boolean completed;
 }

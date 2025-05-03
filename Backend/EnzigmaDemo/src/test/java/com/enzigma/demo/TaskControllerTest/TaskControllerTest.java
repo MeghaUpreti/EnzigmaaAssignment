@@ -6,28 +6,36 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
+import com.enzigma.demo.Entity.TaskEntity;
+import com.enzigma.demo.controller.TaskController;
+import com.enzigma.demo.service.TaskService;
+
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.mockito.Mockito;
 
-import com.enzigma.demo.Dao.TaskDao;
-import com.enzigma.demo.Entity.TaskEntity;
-
+@WebMvcTest(TaskController.class)
 public class TaskControllerTest {
-	@Autowired
-	 private MockMvc mockMvc;
-	 @MockBean
-	 private TaskDao taskDao;
-	 @Test
-	 void shouldReturnTasks() throws Exception {
-	 TaskEntity task = new TaskEntity(1L, "Test Task", false);
-	 Mockito.when(taskDao.findAll()).thenReturn(List.of(task));
-	 mockMvc.perform(get("/api/tasks"))
-	 .andExpect(status().isOk())
-	 .andExpect(jsonPath("$[0].title").value("Test Task"));
-	 }
 
+    @Autowired
+    private MockMvc mockMvc;
 
+    @SuppressWarnings("removal") // To suppress the @MockBean deprecation warning
+    @MockBean
+    private TaskService taskService;
+
+    @Test
+    void shouldReturnTasks() throws Exception {
+        TaskEntity task = new TaskEntity();
+        task.setTitle("Test Task");
+
+        Mockito.when(taskService.getAllTask()).thenReturn(List.of(task));
+
+        mockMvc.perform(get("/tasks"))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$[0].title").value("Test Task"));
+    }
 }
